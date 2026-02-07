@@ -1,0 +1,18 @@
+# Core dependencies
+python-dotenv>=1.0.0
+openai>=1.10.0
+
+# v1: Function Calling API
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+
+# v2: Agent with LangChain (pinned versions for OpenRouter compatibility)
+langchain==0.1.20
+langchain-openai==0.0.5
+langchain-community==0.0.38
+langchain-core==0.1.52
+
+# Optional (for development)
+pytest>=7.4.0
+requests>=2.31.0

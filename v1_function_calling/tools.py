@@ -1,5 +1,5 @@
 from typing import List, Dict
-from app.faq_data import FAQ
+from v1_function_calling.faq_data import FAQ
 
 def normalize(text: str) -> List[str]:
     """Нормализация: нижний регистр, убираем знаки препинания, разбиваем на токены."""

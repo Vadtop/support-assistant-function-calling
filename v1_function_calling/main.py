@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
-from app.tools import search_faq, faq_search_tool, calculate_loan, loan_calculator_tool
+from v1_function_calling.tools import search_faq, faq_search_tool, calculate_loan, loan_calculator_tool
 
 
 load_dotenv()
