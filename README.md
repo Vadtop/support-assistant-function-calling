@@ -4,23 +4,25 @@ AI support assistant with function calling for fintech use case. LLM autonomousl
 
 ## 🎯 Project Goal
 
-Demonstrate practical understanding of **function calling** — how LLM can invoke external tools (search, calculations, APIs) and autonomously decide when to use them.  
-This project is part of my learning path towards an AI/LLM Engineer role.
+Production-ready AI support assistant demonstrating function calling — 
+LLM autonomously invokes external tools (FAQ search, loan calculator) 
+based on user query.
 
 ## 🏗️ Architecture
 
+```
 User Question
-↓
+    ↓
 LLM (GPT-4o-mini) + tools definition
-↓
+    ↓
 [Decision: use tool?]
-↓
+    ↓
 YES → execute tool (search_faq / calculate_loan)
-↓
+    ↓
 Tool results → LLM
-↓
+    ↓
 Final answer based on real data
-
+```
 
 ## ✨ Features
 
@@ -41,15 +43,17 @@ Final answer based on real data
 
 ## 📦 Installation
 
-```
+```bash
 # Clone repository
 git clone https://github.com/YOUR_USERNAME/support-assistant-function-calling.git
 cd support-assistant-function-calling
 
 # Create virtual environment
 python -m venv venv
+
 # Windows:
 venv\Scripts\activate
+
 # Linux / macOS:
 source venv/bin/activate
 
@@ -59,37 +63,50 @@ pip install -r requirements.txt
 # Set up API key
 # Create .env file in project root:
 echo "OPENROUTER_API_KEY=your-key-here" > .env
-🚀 Usage
-Start API server
+```
 
+## 🚀 Usage
+
+### Start API server
+
+```bash
 uvicorn app.main:app --reload
+```
+
 Open interactive docs at: http://localhost:8000/docs
 
-Example Requests
-FAQ Search:
+### Example Requests
 
+#### FAQ Search
 
+```bash
 curl -X POST "http://localhost:8000/support/chat" \
   -H "Content-Type: application/json" \
   -d '{"message": "How can I check my card balance?"}'
+```
+
 Response:
 
-json
+```json
 {
   "assistant_answer": "You can check balance in mobile app...",
   "tool_used": true,
   "tool_name": "search_faq",
   "faq_results": [...]
 }
-Loan Calculation:
+```
 
+#### Loan Calculation
 
+```bash
 curl -X POST "http://localhost:8000/support/chat" \
   -H "Content-Type: application/json" \
   -d '{"message": "I want a loan of 500,000 rubles for 12 months at 15%"}'
+```
+
 Response:
 
-json
+```json
 {
   "assistant_answer": "Monthly payment: 45,129 rubles...",
   "tool_used": true,
@@ -100,33 +117,41 @@ json
     "overpayment": 41549.87
   }
 }
-General Question (no tool):
+```
 
+#### General Question (no tool)
 
+```bash
 curl -X POST "http://localhost:8000/support/chat" \
   -H "Content-Type: application/json" \
   -d '{"message": "Thank you!"}'
+```
+
 Response:
 
-json
+```json
 {
   "assistant_answer": "You're welcome! Let me know if you need help.",
   "tool_used": false
 }
-🌐 API Endpoints
-GET /
+```
+
+## 🌐 API Endpoints
+
+### `GET /`
 Health check endpoint.
 
-GET /faq/search
+### `GET /faq/search`
 Test FAQ search without LLM.
-Parameters: q (search query), top_k (number of results)
+- Parameters: `q` (search query), `top_k` (number of results)
 
-POST /support/chat
+### `POST /support/chat`
 Main assistant endpoint with function calling.
-Request body: {"message": "your question here"}
+- Request body: `{"message": "your question here"}`
 
-📂 Project Structure
+## 📂 Project Structure
 
+```
 support-assistant-function-calling/
 ├── app/
 │   ├── __init__.py
@@ -139,97 +164,54 @@ support-assistant-function-calling/
 ├── .gitignore
 ├── requirements.txt
 └── README.md
-🧪 What I Learned
-Core Concepts
-Function calling — LLM can invoke external functions/APIs for data retrieval
+```
 
-Tool decision making — model autonomously decides when to use tools
+## 🔧 Technical Highlights
 
-Parameter extraction — LLM extracts structured data from natural language
+### Core Concepts
 
-Multiple tools — one assistant can handle different types of requests
+- **Function calling** — LLM can invoke external functions/APIs for data retrieval
+- **Tool decision making** — model autonomously decides when to use tools
+- **Parameter extraction** — LLM extracts structured data from natural language
+- **Multiple tools** — one assistant can handle different types of requests
 
-Implementation Details
-Tool definition via JSON schema (function name, description, parameters)
+### Implementation Details
 
-Two-step flow: (1) LLM decides → (2) execute tool → (3) LLM formulates answer
+- Tool definition via JSON schema (function name, description, parameters)
+- Two-step flow: (1) LLM decides → (2) execute tool → (3) LLM formulates answer
+- `tool_choice="auto"` — model decides when to use tool vs direct response
+- Handling multiple tools with if/elif branches
 
-tool_choice="auto" — model decides when to use tool vs direct response
+## 📊 Project Evolution
 
-Handling multiple tools with if/elif branches
+### Current Version (v1.0)
 
-📊 Project Evolution
-Current Version (v1.0):
+- ✅ Function calling with 2 tools (FAQ search + loan calculator)
+- ✅ FastAPI REST API
+- ✅ Token-based FAQ search (12 items)
+- ✅ Loan calculator with parameter extraction
+- ✅ Examples and documentation
 
-✅ Function calling with 2 tools (FAQ search + loan calculator)
+### Planned (v1.1)
 
-✅ FastAPI REST API
+- ⏳ Add vector DB (Pinecone/Weaviate) for FAQ search
+- ⏳ Multi-turn conversations with dialog history
+- ⏳ Third tool: create_ticket for escalation
+- ⏳ Metrics (latency, tool usage rate)
 
-✅ Token-based FAQ search (12 items)
+### Future (v2.0)
 
-✅ Loan calculator with parameter extraction
+- 🔮 Deploy to Railway/Render
+- 🔮 Add monitoring and logging
+- 🔮 A/B testing (with tool vs without tool)
 
-✅ Examples and documentation
+## 💡 Why This Approach?
 
-Planned (v1.1):
-
- Add vector DB (Pinecone/Weaviate) for FAQ search
-
- Multi-turn conversations with dialog history
-
- Third tool: create_ticket for escalation
-
- Metrics (latency, tool usage rate)
-
-Future (v2.0):
-
- Deploy to Railway/Render
-
- Add monitoring and logging
-
- A/B testing (with tool vs without tool)
-
-💡 Why This Approach?
 Starting with simple token-based search and manual tool handling, then scaling to vector DB and advanced orchestration. This gives:
 
-Clear understanding of function calling internals
+- Clear understanding of function calling internals
+- Ability to debug tool invocation issues
 
-Ability to debug tool invocation issues
+## 📧 Contact
 
-Confidence in technical interviews when asked "how does function calling work?"
-
-"Junior uses frameworks. Middle understands what happens under the hood."
-
-🎓 Interview Readiness
-Based on this project I can:
-
-Explain what function calling is and why it's needed
-
-Describe the flow: tool definition → decision → execution → answer
-
-Show working code with multiple tools
-
-Discuss when to use function calling vs data in prompt
-
-Explain tool decision making and parameter extraction
-
-Key Interview Questions Covered
-Q: What is function calling and why use it?
-A: Function calling allows LLM to invoke external functions/APIs for data retrieval. Model decides when tool is needed and generates structured request. Prevents hallucinations, enables real-time data access, integrates LLM with internal systems.
-
-Q: Give an example.
-A: In my Support Assistant, LLM calls search_faq() when client asks about bank products, or calculate_loan() for loan calculations. Model extracts parameters from natural language ("500,000 rubles for 12 months at 15%"), invokes function, gets results, and formulates answer.
-
-Q: How do you handle cases when tool is not needed?
-A: I use tool_choice="auto" — model decides. For general questions (greeting, thanks) it responds directly. For product/calculation questions — invokes tool.
-
-📝 Notes
-This is a learning project demonstrating function calling fundamentals
-
-API keys are not included in the repo — use your own via .env
-
-Built as part of intensive learning path to transition into AI/LLM Engineering
-
-📧 Contact
-Built by Vadim Titov as part of transition to an AI/LLM Engineer role.
-Focus areas: RAG, function calling, AI assistants for customer support and fintech.
+GitHub: [@Vadtop](https://github.com/Vadtop)
