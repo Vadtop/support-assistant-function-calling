@@ -4,9 +4,9 @@ AI support assistant with function calling for fintech use case. LLM autonomousl
 
 ## 🎯 Project Goal
 
-Production-ready AI support assistant demonstrating function calling — 
-LLM autonomously invokes external tools (FAQ search, loan calculator) 
-based on user query.
+Educational project — demonstrates function calling.
+LLM autonomously decides when to invoke a tool: 
+FAQ search or loan calculator.
 
 ## 🏗️ Architecture
 
